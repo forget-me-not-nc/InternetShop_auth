@@ -1,13 +1,11 @@
-﻿using DataAccessLayer.Configurations;
-using DataAccessLayer.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DataAccessLayer.Entities;
+using DataAccessLayer.EntityConfigs;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
 {
-    public class DatabaseContext : IdentityDbContext<User>
+    public class DatabaseContext : DbContext, IDatabaseContext
     {
-        public DbSet<Account> Accounts { get; set; }
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
             
@@ -16,9 +14,12 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
         }
+
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public async Task<int> SaveChanges() => await base.SaveChangesAsync();
     }
 }

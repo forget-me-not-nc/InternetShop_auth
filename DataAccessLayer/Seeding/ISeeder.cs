@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Seeding.Interfaces
+namespace DataAccessLayer.Seeding
 {
     public interface ISeeder<T> where T : class
     {

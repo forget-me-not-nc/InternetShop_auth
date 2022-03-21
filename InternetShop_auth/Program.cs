@@ -1,29 +1,61 @@
 using DataAccessLayer;
-using DataAccessLayer.Entities;
-using DataAccessLayer.Repositories.AccountRepository;
-using Microsoft.AspNetCore.Identity;
+using DataAccessLayer.Repository;
+using DataAccessLayer.Repository.AccountRepository;
+using DataAccessLayer.Repository.UserRepository;
+using DataAccessLayer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 
+//configurations
 var builder = WebApplication.CreateBuilder(args);
 
-//config
-builder.Services.AddControllers();
-
-builder.Services.AddTransient<IAccountRepository, AccountRepository>();
-
-
+#region DBContext
 builder.Services.AddDbContext<DatabaseContext>(
-    options => options.UseSqlServer(builder.Configuration["ConnectionString"]));
+        optionsAction => optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"),
+        migration => migration.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName))
+    );
+#endregion
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddSignInManager<SignInManager<User>>()
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<DatabaseContext>();
+
+#region Injections
+builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+#endregion
+
+#region Swagger
+builder.Services.AddSwaggerGen(swagger =>
+{
+    swagger.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "IntenetShop_auth",
+    });
+});
+#endregion
+
+builder.Services.AddControllers();
 
 //build
 var app = builder.Build();
 
+#region Swagger
+
+app.UseSwagger();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntenetShop_auth v1");
+});
+#endregion
+
+#region Routing
 app.UseHttpsRedirection();
 
 app.UseRouting();
@@ -32,7 +64,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-
+#endregion
 
 app.MapGet("/", () => "Hello World!");
 

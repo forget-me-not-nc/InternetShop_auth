@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.Entities;
-using DataAccessLayer.Repositories.AccountRepository;
+using DataAccessLayer.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternetShop_auth.Controllers
@@ -8,21 +8,18 @@ namespace InternetShop_auth.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        IAccountRepository _repository;
-
-        public AccountController(IAccountRepository repository)
+        private readonly IUnitOfWork _unitOfWork;
+        public AccountController(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("getAll")]
-        public ActionResult<Account> GetAllAccounts()
+        public ActionResult<IEnumerable<Account>> GetAllAccounts()
         {
             try
             {
-                var a = _repository.GetAllAsync();
-
-                return Ok(a);
+                return Ok(_unitOfWork.Accounts.GetAllAsync().Result);
             }
             catch (Exception ex)
             {
