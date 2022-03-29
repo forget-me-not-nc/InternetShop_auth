@@ -25,7 +25,7 @@ namespace DataAccessLayer.Repository
 
         public async Task CreateRangeAsync(IEnumerable<TEntity> entities)
         {
-            await Task.Run(() => _context.Set<TEntity>().AddRange(entities));
+            await Task.Run(() => _context.Set<TEntity>().AddRangeAsync(entities));
         }
 
         public async Task DeleteAsync(string id)
