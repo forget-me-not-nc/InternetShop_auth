@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Entities;
+﻿using DataAccessLayer.Configurations;
+using DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
@@ -10,8 +11,15 @@ namespace DataAccessLayer
             
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+        }
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<User> Users { get; set; }
-        public async Task<int> SaveChanges() => await base.SaveChangesAsync();
     }
 }

@@ -1,3 +1,5 @@
+using BusinessLogicLayer.Services.AccountServices;
+using BusinessLogicLayer.Services.UserServices;
 using DataAccessLayer;
 using DataAccessLayer.Repository;
 using DataAccessLayer.Repository.AccountRepository;
@@ -6,6 +8,7 @@ using DataAccessLayer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 //configurations
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +22,21 @@ builder.Services.AddDbContext<DatabaseContext>(
 
 
 #region Injections
-builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+builder.Services.AddTransient<IDatabaseContext, DatabaseContext>();
 
-builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
+builder.Services.AddTransient<IAccountService, AccountServiceImpl>();
+builder.Services.AddTransient<IUserService, UserServiceImpl>();
+
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+#endregion
+
+#region Config
+
 
 #endregion
 
@@ -39,8 +50,6 @@ builder.Services.AddSwaggerGen(swagger =>
     });
 });
 #endregion
-
-builder.Services.AddControllers();
 
 //build
 var app = builder.Build();

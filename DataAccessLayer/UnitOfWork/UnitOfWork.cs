@@ -11,26 +11,22 @@ namespace DataAccessLayer.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatabaseContext _context;
+        public IAccountRepository Accounts { get; }
 
-        public UnitOfWork(DatabaseContext context)
+        public IUserRepository Users { get; }
+
+        public UnitOfWork(DatabaseContext context, 
+            IAccountRepository accountRepository,
+            IUserRepository userRepository)
         {
             _context = context;
-            Accounts = new AccountRepository(_context);
-            Users = new UserRepository(_context);
+            Accounts = accountRepository;
+            Users = userRepository;
         }
 
-        public IAccountRepository Accounts { get; private set; }
-
-        public IUserRepository Users { get; private set; }
-
-        public int Complete()
+        public async Task SaveChangesAsync()
         {
-            return _context.SaveChanges().Result;
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
+            await _context.SaveChangesAsync();
         }
     }
 }

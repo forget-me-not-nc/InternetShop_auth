@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork 
     {
         IAccountRepository Accounts { get; }
         IUserRepository Users { get; }
-        int Complete();
+        Task SaveChangesAsync();
     }
 }

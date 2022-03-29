@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternetShop_auth", "InternetShop_auth\InternetShop_auth.csproj", "{8B21F7CF-2D83-46C9-91D2-8265B5EBC9BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{91ADF75C-5189-4114-A6E2-06E8971EBAA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{91ADF75C-5189-4114-A6E2-06E8971EBAA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{DFDEE22B-D114-4F0F-B943-305896AB0601}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{91ADF75C-5189-4114-A6E2-06E8971EBAA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91ADF75C-5189-4114-A6E2-06E8971EBAA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91ADF75C-5189-4114-A6E2-06E8971EBAA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,17 +10,17 @@ namespace DataAccessLayer.Repository
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         protected readonly DatabaseContext _context;
-        protected static string GetEntityNotFoundErrorMessage(string id) =>
-            $"{typeof(TEntity).Name} with id {id} not found.";
-
         public GenericRepository(DatabaseContext context)
         {
             _context = context;
         }
 
-        public async Task CreateAsync(TEntity entity)
+        protected static string GetEntityNotFoundErrorMessage(string id) =>
+            $"{typeof(TEntity).Name} with id {id} not found.";
+
+        public async Task<TEntity> CreateAsync(TEntity entity)
         {
-            await Task.Run(() => _context.Set<TEntity>().Add(entity));
+            return (await _context.Set<TEntity>().AddAsync(entity)).Entity;
         }
 
         public async Task CreateRangeAsync(IEnumerable<TEntity> entities)
@@ -30,7 +30,8 @@ namespace DataAccessLayer.Repository
 
         public async Task DeleteAsync(string id)
         {
-            await Task.Run(() => _context.Set<TEntity>().Remove(GetByIdAsync(id).Result));
+            var entity = await GetByIdAsync(id);
+            await Task.Run(() => _context.Set<TEntity>().Remove(entity));
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -38,11 +39,15 @@ namespace DataAccessLayer.Repository
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(string id) => await _context.Set<TEntity>().FindAsync(id)?? throw new Exception(GetEntityNotFoundErrorMessage(id));
+        public async Task<TEntity> GetByIdAsync(string id) => await _context.Set<TEntity>().FindAsync(id) ?? throw new Exception(GetEntityNotFoundErrorMessage(id));
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            await Task.Run(() => _context.Set<TEntity>().Update(entity));
+
+           return await Task.Run(() =>
+               {
+                   return _context.Set<TEntity>().Update(entity).Entity;
+               });
         }
     }
 }
