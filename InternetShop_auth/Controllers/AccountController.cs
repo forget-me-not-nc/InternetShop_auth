@@ -17,11 +17,11 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpGet("getAll")]
-        public ActionResult<IEnumerable<AccountModify>> GetAllAccounts()
+        public async Task<ActionResult<IEnumerable<AccountInfoResponse>>> GetAllAccounts()
         {
             try
             {
-                return Ok(_accountService.GetAllAsync().Result);
+                return Ok(await _accountService.GetAllAsync());
             }
             catch (Exception ex)
             {
@@ -29,22 +29,22 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        //[HttpGet("get/{id}")]
-        //public ActionResult<AccountModify> GetById(string id)
-        //{
-        //    try
-        //    {
-        //        //return Ok(_unitOfWork.Accounts.GetByIdAsync(id).Result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpGet("get/{id}")]
+        public async Task<ActionResult<AccountCreateRequest>> GetById(string id)
+        {
+            try
+            {
+                return Ok(await _accountService.GetAsync(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
         [HttpPost("create")]
-        public ActionResult Create([FromBody] AccountModify account)
+        public async Task<ActionResult<AccountInfoResponse>> Create([FromBody] AccountCreateRequest account)
         {
             try
             {
@@ -52,9 +52,7 @@ namespace InternetShop_auth.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                account.Id = Guid.NewGuid().ToString();
-
-                 return Ok(_accountService.CreateAsync(account));
+                 return Ok(await _accountService.CreateAsync(account));
             }
             catch (Exception ex)
             {
@@ -63,7 +61,7 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult Update([FromBody] AccountModify account)
+        public async Task<ActionResult<AccountInfoResponse>> Update([FromBody] AccountUpdateRequest account)
         {
             try
             {
@@ -71,7 +69,7 @@ namespace InternetShop_auth.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_accountService.UpdateAsync(account));
+                return Ok(await _accountService.UpdateAsync(account));
             }
             catch (Exception ex)
             {
@@ -79,17 +77,18 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        //[HttpDelete("delete/{id}")]
-        //public ActionResult Delete(string id)
-        //{
-        //    try
-        //    {
-        //        return Ok(_unitOfWork.Accounts.DeleteAsync(id));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> Delete(string id)
+        {
+            try
+            {
+                await _accountService.DeleteAsync(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

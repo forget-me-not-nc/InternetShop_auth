@@ -1,4 +1,6 @@
-﻿using DataAccessLayer.Entities;
+﻿using BusinessLogicLayer.DTO.UserDTOs;
+using BusinessLogicLayer.Services.UserServices;
+using DataAccessLayer.Entities;
 using DataAccessLayer.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,18 +10,18 @@ namespace InternetShop_auth.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UserController(IUnitOfWork unitOfWork)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         [HttpGet("getAll")]
-        public ActionResult<IEnumerable<User>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserInfo>>> GetAllUsers()
         {
             try
             {
-                return Ok(_unitOfWork.Users.GetAllAsync().Result);
+                return Ok(await _userService.GetAllAsync());
             }
             catch (Exception ex)
             {
@@ -28,11 +30,11 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpGet("get/{id}")]
-        public ActionResult<User> GetById(string id)
+        public async Task<ActionResult<UserInfo>> GetById(string id)
         {
             try
             {
-                return Ok(_unitOfWork.Users.GetByIdAsync(id).Result);
+                return Ok(await _userService.GetAsync(id));
             }
             catch (Exception ex)
             {
@@ -42,7 +44,7 @@ namespace InternetShop_auth.Controllers
 
 
         [HttpPost("create")]
-        public ActionResult<User> Create([FromBody] User user)
+        public async Task<ActionResult<UserInfo>> Create([FromBody] UserModify user)
         {
             try
             {
@@ -50,9 +52,7 @@ namespace InternetShop_auth.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                //account.Id = Guid.NewGuid().ToString();
-
-                return Ok(_unitOfWork.Users.CreateAsync(user));
+                return Ok(await _userService.CreateAsync(user));
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult Update([FromBody] User user)
+        public async Task<ActionResult<UserInfo>> Update([FromBody] UserModify user)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace InternetShop_auth.Controllers
 
                 if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
 
-                return Ok(_unitOfWork.Users.UpdateAsync(user));
+                return Ok(await _userService.UpdateAsync(user));
             }
             catch (Exception ex)
             {
@@ -78,11 +78,12 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             try
             {
-                return Ok(_unitOfWork.Users.DeleteAsync(id));
+                await _userService.DeleteAsync(id);
+                return Ok();
             }
             catch (Exception ex)
             {

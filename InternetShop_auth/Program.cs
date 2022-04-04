@@ -37,18 +37,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 #region Config
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
 #endregion
 
 #region Swagger
-builder.Services.AddSwaggerGen(swagger =>
-{
-    swagger.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Version = "v1",
-        Title = "IntenetShop_auth",
-    });
-});
+builder.Services.AddSwaggerGen();
 #endregion
 
 //build
@@ -56,12 +51,14 @@ var app = builder.Build();
 
 #region Swagger
 
-app.UseSwagger();
-
-app.UseSwaggerUI(c =>
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntenetShop_auth v1");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntenetShop_auth v1");
+    });
+}
 #endregion
 
 #region Routing
@@ -75,6 +72,8 @@ app.UseEndpoints(endpoints =>
 });
 #endregion
 
-app.MapGet("/", () => "Hello World!");
+app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();

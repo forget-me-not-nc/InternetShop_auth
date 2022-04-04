@@ -1,10 +1,11 @@
 ﻿using DataAccessLayer.Configurations;
 using DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
 {
-    public class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext : IdentityDbContext<User>, IDatabaseContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -20,6 +21,5 @@ namespace DataAccessLayer
         }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

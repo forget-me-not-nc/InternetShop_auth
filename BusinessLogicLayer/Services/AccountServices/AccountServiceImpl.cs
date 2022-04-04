@@ -17,8 +17,9 @@ namespace BusinessLogicLayer.Services.AccountServices
             this.mapper = mapper;
         }
 
-        public async Task<AccountInfoResponse> CreateAsync(AccountModify entity)
+        public async Task<AccountInfoResponse> CreateAsync(AccountCreateRequest entity)
         {
+            entity.Id = Guid.NewGuid().ToString();
             var Acc = mapper.Map<Account>(entity);
 
             Acc.UserId = Acc.User.Id;
@@ -26,12 +27,13 @@ namespace BusinessLogicLayer.Services.AccountServices
             var newAcc = await _unitOfWork.Accounts.CreateAsync(Acc);
             await _unitOfWork.SaveChangesAsync();
 
-            return await Task.FromResult(mapper.Map<AccountInfoResponse>(newAcc));
+            return mapper.Map<AccountInfoResponse>(newAcc);
         }
 
-        public Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.Accounts.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<AccountInfoResponse>> GetAllAsync()
@@ -41,14 +43,23 @@ namespace BusinessLogicLayer.Services.AccountServices
             return list.Select(e => mapper.Map<AccountInfoResponse>(e));
         }
 
-        public Task<AccountInfoResponse> GetAsync(string id)
+        public async Task<AccountInfoResponse> GetAsync(string id)
         {
-            throw new NotImplementedException();
+            var Acc = await _unitOfWork.Accounts.GetByIdAsync(id); 
+
+            return mapper.Map<AccountInfoResponse>(Acc);
         }
 
-        public Task<AccountInfoResponse> UpdateAsync(AccountModify entity)
+        public async Task<AccountInfoResponse> UpdateAsync(AccountUpdateRequest entity)
         {
-            throw new NotImplementedException();
+            var acc = await _unitOfWork.Accounts.GetByIdAsync(entity.Id);
+            acc.Balance = entity.Balance;
+            acc.IsActive = entity.isActive;
+
+            await _unitOfWork.Accounts.UpdateAsync(acc);
+            await _unitOfWork.SaveChangesAsync();
+
+            return mapper.Map<AccountInfoResponse>(acc);
         }
     }
 }

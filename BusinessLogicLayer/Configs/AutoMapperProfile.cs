@@ -21,7 +21,7 @@ namespace BusinessLogicLayer.DTO.Configs
         {
             CreateMap<Account, AccountInfoResponse>();
 
-            CreateMap<AccountModify, Account>()
+            CreateMap<AccountCreateRequest, Account>()
                 .ForMember(dest => dest.User, rule => rule.MapFrom(
                         src => new User()
                         {
@@ -32,6 +32,8 @@ namespace BusinessLogicLayer.DTO.Configs
                             IsDeleted = false
                         }
                     ));
+
+            CreateMap<AccountUpdateRequest, Account>();
         }
 
         public AutoMapperProfile()

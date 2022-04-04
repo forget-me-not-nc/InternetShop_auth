@@ -22,7 +22,7 @@ namespace DataAccessLayer.Configurations
 
             builder.HasOne(u => u.User)
                 .WithOne(a => a.Account)
-                .HasForeignKey<User>(u => u.Id)
+                .HasForeignKey<Account>(acc => acc.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

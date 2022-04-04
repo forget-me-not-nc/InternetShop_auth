@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.DTO.AccountDTOs
 {
-    public class AccountModify
+    public class AccountCreateRequest
     {
         public string Id { get; set; }
         public bool isActive { get; set; }

@@ -11,8 +11,8 @@ namespace BusinessLogicLayer.Services.AccountServices
     {
         Task<IEnumerable<AccountInfoResponse>> GetAllAsync();
         Task<AccountInfoResponse> GetAsync(string id);
-        Task<AccountInfoResponse> UpdateAsync(AccountModify entity);
-        Task<AccountInfoResponse> CreateAsync(AccountModify entity);
+        Task<AccountInfoResponse> UpdateAsync(AccountUpdateRequest entity);
+        Task<AccountInfoResponse> CreateAsync(AccountCreateRequest entity);
         Task DeleteAsync(string id);
     }
 }

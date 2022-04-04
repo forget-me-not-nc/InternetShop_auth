@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,16 +18,13 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(item => item.Id);
 
             builder.Property(p => p.FirstName)
-                .IsRequired()
-                .HasColumnType("text");
+                .IsRequired();
 
             builder.Property(p => p.LastName)
-                .IsRequired()
-                .HasColumnType("text");
+                .IsRequired();
 
             builder.Property(p => p.Address)
-                 .IsRequired()
-                 .HasColumnType("text");
+                 .IsRequired();
 
             builder.Property(p => p.IsDeleted)
                 .IsRequired();
