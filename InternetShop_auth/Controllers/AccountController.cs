@@ -29,7 +29,7 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<AccountCreateRequest>> GetById(string id)
         {
             try
@@ -77,7 +77,7 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
             try

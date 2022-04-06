@@ -17,7 +17,7 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<ActionResult<IEnumerable<UserInfo>>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<UserInfoResponse>>> GetAllUsers()
         {
             try
             {
@@ -29,8 +29,8 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        [HttpGet("get/{id}")]
-        public async Task<ActionResult<UserInfo>> GetById(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserInfoResponse>> GetById(string id)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace InternetShop_auth.Controllers
 
 
         [HttpPost("create")]
-        public async Task<ActionResult<UserInfo>> Create([FromBody] UserModify user)
+        public async Task<ActionResult<UserInfoResponse>> Create([FromBody] UserCreateRequest user)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace InternetShop_auth.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult<UserInfo>> Update([FromBody] UserModify user)
+        public async Task<ActionResult<UserInfoResponse>> Update([FromBody] UserUpdateRequest user)
         {
             try
             {
@@ -77,13 +77,64 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
             try
             {
                 await _userService.DeleteAsync(id);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("password")]
+        public async Task<ActionResult<UserInfoResponse>> UpdatePassword([FromBody] UserChangePasswordRequest password)
+        {
+            try
+            {
+                if (password == null) throw new ArgumentNullException("Empty body!");
+
+                if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
+
+                return Ok(await _userService.UpdatePasswordAsync(password));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("role")]
+        public async Task<ActionResult<UserInfoResponse>> AddRole([FromBody] UserChangeRoleRequest userRole)
+        {
+            try
+            {
+                if (userRole == null) throw new ArgumentNullException("Empty body!");
+
+                if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
+
+                return Ok(await _userService.AddRoleAsync(userRole));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("role")]
+        public async Task<ActionResult<UserInfoResponse>> DeleteRole([FromBody] UserChangeRoleRequest userRole)
+        {
+            try
+            {
+                if (userRole == null) throw new ArgumentNullException("Empty body!");
+
+                if (!ModelState.IsValid) throw new InvalidOperationException("Invalid body!");
+
+                return Ok(await _userService.DeleteRoleAsync(userRole));
             }
             catch (Exception ex)
             {

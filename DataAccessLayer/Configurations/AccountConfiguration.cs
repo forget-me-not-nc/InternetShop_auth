@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Entities;
+using DataAccessLayer.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,6 +25,8 @@ namespace DataAccessLayer.Configurations
                 .WithOne(a => a.Account)
                 .HasForeignKey<Account>(acc => acc.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            new AccountSeeder().Seed(builder);
         }
     }
 }

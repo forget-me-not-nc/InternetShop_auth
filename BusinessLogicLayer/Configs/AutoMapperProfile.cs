@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogicLayer.DTO.Configs
 {
@@ -14,24 +15,15 @@ namespace BusinessLogicLayer.DTO.Configs
     {
         private void UserMapper()
         {
-            CreateMap<UserModify, User>();
-            CreateMap<User, UserInfo>();
+            CreateMap<UserCreateRequest, User>();
+            CreateMap<UserUpdateRequest, User>();
+            CreateMap<User, UserInfoResponse>();
         }
         private void AccountMapper()
         {
             CreateMap<Account, AccountInfoResponse>();
 
-            CreateMap<AccountCreateRequest, Account>()
-                .ForMember(dest => dest.User, rule => rule.MapFrom(
-                        src => new User()
-                        {
-                            FirstName = src.FirstName,
-                            LastName = src.LastName,
-                            Address = src.Address,
-                            Id = Guid.NewGuid().ToString(),
-                            IsDeleted = false
-                        }
-                    ));
+            CreateMap<AccountCreateRequest, Account>();
 
             CreateMap<AccountUpdateRequest, Account>();
         }

@@ -1,10 +1,12 @@
 using BusinessLogicLayer.Services.AccountServices;
 using BusinessLogicLayer.Services.UserServices;
 using DataAccessLayer;
+using DataAccessLayer.Entities;
 using DataAccessLayer.Repository;
 using DataAccessLayer.Repository.AccountRepository;
 using DataAccessLayer.Repository.UserRepository;
 using DataAccessLayer.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -18,6 +20,22 @@ builder.Services.AddDbContext<DatabaseContext>(
         optionsAction => optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"),
         migration => migration.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName))
     );
+#endregion
+
+#region Identity
+
+builder.Services.AddIdentity<User, IdentityRole>(
+        opts =>
+        { 
+            opts.Password.RequiredLength = 5;   
+            opts.Password.RequireNonAlphanumeric = false;  
+            opts.Password.RequireLowercase = false; 
+            opts.Password.RequireUppercase = false; 
+            opts.Password.RequireDigit = false;
+        }
+    )
+    .AddEntityFrameworkStores<DatabaseContext>();
+
 #endregion
 
 
@@ -65,6 +83,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

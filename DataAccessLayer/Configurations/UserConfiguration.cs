@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Entities;
+using DataAccessLayer.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -24,10 +25,12 @@ namespace DataAccessLayer.Configurations
                 .IsRequired();
 
             builder.Property(p => p.Address)
-                 .IsRequired();
+                .IsRequired(false);
 
             builder.Property(p => p.IsDeleted)
                 .IsRequired();
+
+            new UserSeeder().Seed(builder);
         }
     }
 }

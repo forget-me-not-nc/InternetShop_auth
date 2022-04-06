@@ -4,6 +4,7 @@ using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220404195018_second nullable fix")]
+    partial class secondnullablefix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,15 +45,6 @@ namespace DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "eebce548-84a8-43b6-a258-94ecbd9b41cb",
-                            Balance = 99999.9m,
-                            IsActive = true,
-                            UserId = "83c4eefe-3f50-458d-a227-21f6a7806ab1"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entities.User", b =>
@@ -131,28 +124,6 @@ namespace DataAccessLayer.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "83c4eefe-3f50-458d-a227-21f6a7806ab1",
-                            AccessFailedCount = 0,
-                            Address = "none",
-                            ConcurrencyStamp = "75872849-5693-473b-ad2b-2a0fa6c16efd",
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Admin",
-                            IsDeleted = false,
-                            LastName = "Admin",
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPnmHi16tVm0kSiEcUjq8kqLZ+Jtv/RrgU507N3ZyAzr05fzNjuRZaiRsVHNANJaTw==",
-                            PhoneNumber = "+111111111111",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "67ca990c-a58a-4408-963c-607078654698",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -180,22 +151,6 @@ namespace DataAccessLayer.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "5d4695c5-ebeb-4c7d-9144-26637787a1ec",
-                            ConcurrencyStamp = "e47e980c-4145-437e-8921-1ba076c13b0e",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "99deb2e8-7cab-4013-a43e-0a8d55308419",
-                            ConcurrencyStamp = "29c3415f-3bc3-4a80-a99e-c688693cbdb8",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -283,13 +238,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "83c4eefe-3f50-458d-a227-21f6a7806ab1",
-                            RoleId = "99deb2e8-7cab-4013-a43e-0a8d55308419"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
