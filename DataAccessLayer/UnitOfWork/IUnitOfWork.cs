@@ -1,5 +1,4 @@
 ﻿using DataAccessLayer.Repository.AccountRepository;
-using DataAccessLayer.Repository.UserRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,6 @@ namespace DataAccessLayer.UnitOfWork
     public interface IUnitOfWork 
     {
         IAccountRepository Accounts { get; }
-        IUserRepository Users { get; }
         Task SaveChangesAsync();
     }
 }

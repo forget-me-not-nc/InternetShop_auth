@@ -11,7 +11,5 @@ namespace DataAccessLayer.Entities
         public string Id { get; set; }
         public bool IsActive { get; set; }
         public decimal Balance { get; set; }  
-        public string? UserId { get; set; }
-        public User User { get; set; }
     }
 }

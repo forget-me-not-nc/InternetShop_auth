@@ -2,12 +2,14 @@
 using BusinessLogicLayer.Services.AccountServices;
 using DataAccessLayer.Entities;
 using DataAccessLayer.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternetShop_auth.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;

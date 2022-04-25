@@ -1,19 +1,18 @@
 using BusinessLogicLayer.Services.AccountServices;
-using BusinessLogicLayer.Services.UserServices;
 using DataAccessLayer;
 using DataAccessLayer.Entities;
-using DataAccessLayer.Repository;
 using DataAccessLayer.Repository.AccountRepository;
-using DataAccessLayer.Repository.UserRepository;
 using DataAccessLayer.UnitOfWork;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
+using System.Text;
 
 //configurations
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 
 #region DBContext
 builder.Services.AddDbContext<DatabaseContext>(
@@ -22,31 +21,12 @@ builder.Services.AddDbContext<DatabaseContext>(
     );
 #endregion
 
-#region Identity
-
-builder.Services.AddIdentity<User, IdentityRole>(
-        opts =>
-        { 
-            opts.Password.RequiredLength = 5;   
-            opts.Password.RequireNonAlphanumeric = false;  
-            opts.Password.RequireLowercase = false; 
-            opts.Password.RequireUppercase = false; 
-            opts.Password.RequireDigit = false;
-        }
-    )
-    .AddEntityFrameworkStores<DatabaseContext>();
-
-#endregion
-
-
 #region Injections
 builder.Services.AddTransient<IDatabaseContext, DatabaseContext>();
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddTransient<IAccountService, AccountServiceImpl>();
-builder.Services.AddTransient<IUserService, UserServiceImpl>();
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -56,12 +36,31 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #region Config
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+
+#endregion
+
+#region Auth
+
+builder.Services.AddAuthentication("Bearer")
+    .AddIdentityServerAuthentication("Bearer", 
+        opt =>
+        {
+            opt.Authority = "https://localhost:5443";
+            opt.ApiName = "AccountAPI";
+        }
+    );
 
 #endregion
 
 #region Swagger
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "My API",
+        Version = "v1"
+    });
+});
 #endregion
 
 //build
@@ -76,26 +75,17 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntenetShop_auth v1");
     });
+
 }
 #endregion
 
 #region Routing
-app.UseHttpsRedirection();
-
-app.UseRouting();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-#endregion
-
-app.UseHttpsRedirection();
-
 app.MapControllers();
+
+#endregion
 
 app.Run();

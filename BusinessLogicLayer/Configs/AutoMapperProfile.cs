@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.UserDTOs;
 using BusinessLogicLayer.DTO.AccountDTOs;
 using DataAccessLayer.Entities;
 using System;
@@ -13,12 +12,6 @@ namespace BusinessLogicLayer.DTO.Configs
 {
     public class AutoMapperProfile : Profile
     {
-        private void UserMapper()
-        {
-            CreateMap<UserCreateRequest, User>();
-            CreateMap<UserUpdateRequest, User>();
-            CreateMap<User, UserInfoResponse>();
-        }
         private void AccountMapper()
         {
             CreateMap<Account, AccountInfoResponse>();
@@ -30,7 +23,6 @@ namespace BusinessLogicLayer.DTO.Configs
 
         public AutoMapperProfile()
         {
-            UserMapper();
             AccountMapper();
         }
     }

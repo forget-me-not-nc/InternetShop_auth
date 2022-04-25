@@ -21,11 +21,6 @@ namespace DataAccessLayer.Configurations
                 .IsRequired()
                 .HasColumnType("bit");
 
-            builder.HasOne(u => u.User)
-                .WithOne(a => a.Account)
-                .HasForeignKey<Account>(acc => acc.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             new AccountSeeder().Seed(builder);
         }
     }

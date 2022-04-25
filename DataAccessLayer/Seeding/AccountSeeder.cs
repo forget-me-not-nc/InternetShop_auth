@@ -16,8 +16,7 @@ namespace DataAccessLayer.Seeding
             {
                 Id = "eebce548-84a8-43b6-a258-94ecbd9b41cb",
                 IsActive = true,
-                Balance = 99999.9M,
-                UserId = "83c4eefe-3f50-458d-a227-21f6a7806ab1"
+                Balance = 99999.9M
             }
         };
 

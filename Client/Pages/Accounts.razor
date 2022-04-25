@@ -1,0 +1,27 @@
+﻿@page "/accounts"
+
+<h3>Accounts</h3>
+
+<div class="row">
+    @if(_Accounts.Any())
+    {
+        @foreach(var acc in _Accounts)
+        {
+            <div class="col-6 col-sm-12 col-md-6 col-lg-4 col-xl-4 mh-25 mb-4">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Id: @acc.Id</b></h5>
+                        <p class="card-text">Balance: @acc.Balance</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <span>IsActive: @acc.isActive</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No Accounts</p>
+    }
+</div>

@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternetShop_auth", "Intern
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{91ADF75C-5189-4114-A6E2-06E8971EBAA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{DFDEE22B-D114-4F0F-B943-305896AB0601}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{DFDEE22B-D114-4F0F-B943-305896AB0601}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{C308D9CF-38BA-49F1-B0F5-7C7928A47D64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{AE4B5FE1-8B95-4993-ABEB-D624E3DD1AFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFDEE22B-D114-4F0F-B943-305896AB0601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C308D9CF-38BA-49F1-B0F5-7C7928A47D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C308D9CF-38BA-49F1-B0F5-7C7928A47D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C308D9CF-38BA-49F1-B0F5-7C7928A47D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C308D9CF-38BA-49F1-B0F5-7C7928A47D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE4B5FE1-8B95-4993-ABEB-D624E3DD1AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE4B5FE1-8B95-4993-ABEB-D624E3DD1AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE4B5FE1-8B95-4993-ABEB-D624E3DD1AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE4B5FE1-8B95-4993-ABEB-D624E3DD1AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
