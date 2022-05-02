@@ -21,15 +21,6 @@ builder.Services.AddDbContext<MyIdentityDbContext>(opt =>
             b => b.MigrationsAssembly(assembly))
         );
 
-//opt =>
-//{
-//    opt.Password.RequiredLength = 1;
-//    opt.Password.RequireLowercase = false;
-//    opt.Password.RequireUppercase = false;
-//    opt.Password.RequireNonAlphanumeric = false;
-//    opt.Password.RequireDigit = false;
-//})
-
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<MyIdentityDbContext>()
     .AddDefaultTokenProviders();

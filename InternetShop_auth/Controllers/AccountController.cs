@@ -18,7 +18,7 @@ namespace InternetShop_auth.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<AccountInfoResponse>>> GetAllAccounts()
         {
             try
@@ -45,7 +45,7 @@ namespace InternetShop_auth.Controllers
         }
 
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<ActionResult<AccountInfoResponse>> Create([FromBody] AccountCreateRequest account)
         {
             try
@@ -62,7 +62,7 @@ namespace InternetShop_auth.Controllers
             }
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<ActionResult<AccountInfoResponse>> Update([FromBody] AccountUpdateRequest account)
         {
             try
