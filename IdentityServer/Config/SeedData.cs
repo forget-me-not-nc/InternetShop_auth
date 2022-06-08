@@ -6,6 +6,8 @@ using IdentityServer4.EntityFramework.Storage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using DataAccessLayer.Entities;
+using BusinessLogicLayer.Services.AccountServices;
 
 namespace IdentityServer.Config
 {
@@ -21,9 +23,11 @@ namespace IdentityServer.Config
             );
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>()
+                .AddIdentity<CustomUser, IdentityRole>()
                 .AddEntityFrameworkStores<MyIdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IAccountService, AccountServiceImpl>();
 
             services.AddOperationalDbContext(
                 opt =>
@@ -62,17 +66,21 @@ namespace IdentityServer.Config
         }
         private static void EnsureUsers(IServiceScope scope)
         {
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<CustomUser>>();
+           // var accountManager = scope.ServiceProvider.GetRequiredService<IAccountService>();
 
             var nazar = userManager.FindByNameAsync("nazar").Result;
 
             if (nazar == null)
             {
-                nazar = new IdentityUser
+                nazar = new CustomUser
                 {
                     UserName = "nazar",
                     Email = "nazar@gmail.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Sex = true,
+                    Address = "Chernivtzi",
+                    Description = "fdsfsdfs"
                 };
 
                 var result = userManager.CreateAsync(nazar, "Pass123$").Result;
@@ -87,7 +95,8 @@ namespace IdentityServer.Config
                         new Claim(JwtClaimTypes.GivenName, "Nazar"),
                         new Claim(JwtClaimTypes.FamilyName, "Palijchuk"),
                         new Claim(JwtClaimTypes.WebSite, "http://localhost:8080"),
-                        new Claim("location", "Chernivtzi")
+                        new Claim("location", "Chernivtzi"),
+                        new Claim(JwtClaimTypes.Role, "ADMIN")
                     }
                 ).Result;
 

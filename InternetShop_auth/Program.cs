@@ -14,6 +14,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
+builder.Services.AddTransient<IAccountService, AccountServiceImpl>();
+
 #region DBContext
 builder.Services.AddDbContext<DatabaseContext>(
         optionsAction => optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"),
@@ -26,11 +28,9 @@ builder.Services.AddTransient<IDatabaseContext, DatabaseContext>();
 
 builder.Services.AddTransient<IAccountRepository, AccountRepository>();
 
-builder.Services.AddTransient<IAccountService, AccountServiceImpl>();
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #endregion
 
 #region Config

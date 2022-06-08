@@ -24,7 +24,7 @@ namespace Client.Pages
             var tokenResponse = await TokenService.GetTokenAsync("AccountAPI.read");
             _httpClient.SetBearerToken(tokenResponse.AccessToken);
 
-            var result = await _httpClient.GetAsync(_config["apiUrl"] + "/api/Account/getAll");
+            var result = await _httpClient.GetAsync(_config["apiGwUrl"] + "/accounts");
 
             if(result.IsSuccessStatusCode) _Accounts = await result.Content.ReadFromJsonAsync<List<AccountInfoResponse>>();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace DataAccessLayer.Entities
     {
         public string Id { get; set; }
         public bool IsActive { get; set; }
-        public decimal Balance { get; set; }  
+        public decimal Balance { get; set; } 
+        public string UserId { get; set; } 
+        public CustomUser User { get; set; } 
     }
 }

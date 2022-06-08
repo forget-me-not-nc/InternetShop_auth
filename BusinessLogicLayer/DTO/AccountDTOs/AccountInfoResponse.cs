@@ -11,5 +11,6 @@ namespace BusinessLogicLayer.DTO.AccountDTOs
         public string Id { get; set; }
         public bool isActive { get; set; }
         public decimal Balance { get; set; }
+        public string UserId { get; set; }
     }
 }

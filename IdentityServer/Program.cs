@@ -1,3 +1,5 @@
+using BusinessLogicLayer.Services.AccountServices;
+using DataAccessLayer.Entities;
 using IdentityServer.Config;
 using IdentityServer.Data;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connString = builder.Configuration.GetConnectionString("SQLServer");
 
+builder.Services.AddScoped<IAccountService, AccountServiceImpl>();
+
 if (seed) SeedData.EnsureSeedData(connString);
 
 var assembly = typeof(Program).Assembly.GetName().Name;
@@ -21,12 +25,12 @@ builder.Services.AddDbContext<MyIdentityDbContext>(opt =>
             b => b.MigrationsAssembly(assembly))
         );
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<CustomUser, IdentityRole>()
     .AddEntityFrameworkStores<MyIdentityDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddIdentityServer()
-    .AddAspNetIdentity<IdentityUser>()
+    .AddAspNetIdentity<CustomUser>()
     .AddConfigurationStore(opt =>
     {
         opt.ConfigureDbContext = db =>

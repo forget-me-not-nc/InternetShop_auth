@@ -43,7 +43,7 @@ namespace IdentityServer.Config
                   ClientName = "Client Credentials Client",
                   AllowedGrantTypes = GrantTypes.ClientCredentials,
                   ClientSecrets = {new Secret("ClientSecret1".Sha256())},
-                  AllowedScopes = { "AccountAPI.read", "AccountAPI.write" }
+                  AllowedScopes = { "AccountAPI.read", "AccountAPI.write" },
                 },
                 new Client
                 {

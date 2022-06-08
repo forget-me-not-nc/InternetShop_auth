@@ -21,7 +21,11 @@ namespace DataAccessLayer.Configurations
                 .IsRequired()
                 .HasColumnType("bit");
 
-            new AccountSeeder().Seed(builder);
+            builder.HasOne(d => d.User)
+                .WithOne(d => d.Account)
+                .HasForeignKey<Account>(p => p.UserId);
+
+           // new AccountSeeder().Seed(builder);
         }
     }
 }
